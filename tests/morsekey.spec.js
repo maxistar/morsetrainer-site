@@ -42,7 +42,7 @@ describe("morse key", () => {
 
 
     it("should get character pauselength", () => {
-        expect(key.getCharacterSpacingLength()).toEqual(1000);
+        expect(key.getCharacterSpacingLength()).toEqual(800);
     })
 
 

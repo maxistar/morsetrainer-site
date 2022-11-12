@@ -1,7 +1,7 @@
 export default {
   input: 'src/main.js',
   output: {
-    file: 'bundle.js',
+    file: 'docs/assets/bundle.js',
     format: 'iife'
   }
 };
