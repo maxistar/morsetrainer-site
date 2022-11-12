@@ -1,0 +1,27 @@
+{
+  "name": "bin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules node node_modules/jest/bin/jest --env=jsdom",
+    "test:watch": "npm test -- --watch",
+    "index": "node notesindexing.js",
+    "makepages": "node makepages.js",
+    "build": "node node_modules/rollup/dist/bin/rollup -c",
+    "serve": "http-server .."
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^14.1.1",
+    "marked": "^4.1.0"
+  },
+  "devDependencies": {
+    "jest": "^29.2.1",
+    "jest-environment-jsdom": "^29.2.2",
+    "mocha": "^10.1.0",
+    "rollup": "^3.2.5"
+  }
+}
