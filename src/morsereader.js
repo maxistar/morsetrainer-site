@@ -6,11 +6,15 @@ class MorseReader {
 
     #currentNode = null;
 
+    #previousNode = null;
+
     #tree = null;
 
     #latinTree = null;
 
     #cyrillicTree = null;
+
+    #onChangeMode = () => {};
 
     constructor () {
         this.#tree = this.#latinTree = createMorseTree();
@@ -26,12 +30,14 @@ class MorseReader {
         this.#pushCharacter();
         this.#tree = this.#cyrillicTree;
         this.#currentNode = this.#tree;
+        this.#onChangeMode('CYR');
     }
 
     switchToLatin() {
         this.#pushCharacter();
         this.#tree = this.#latinTree;
         this.#currentNode = this.#tree;
+        this.#onChangeMode('LAT');
     }
 
     toggleAlphabet() {
@@ -52,12 +58,17 @@ class MorseReader {
     }
 
     addDot () {
+        this.#previousNode = this.#currentNode;
         if (this.#currentNode.hasDotNode()) {
             this.#currentNode = this.#currentNode.getDotNode();
         } else {
             this.#pushCharacter();
             this.#currentNode = this.#tree;
         }
+    }
+
+    stepBackward() {
+        this.#currentNode = this.#previousNode;
     }
 
     addPause () {
@@ -72,17 +83,25 @@ class MorseReader {
     deleteLastCharacter () {
         if (this.#currentNode !== this.#tree) {
             this.#currentNode = this.#tree;
-            return;
+            return '';
         }
         if (this.#buffer.length > 0) {
-            this.#buffer.pop();
+            return this.#buffer.pop();
         }
+    }
+
+    addCharacter (character) {
+        this.#buffer.push(character);
     }
 
     getBuffer () {
         const buffer = this.#buffer.join('');
         const currentChar = this.#currentNode.getChar();
         return buffer + currentChar;
+    }
+
+    setOnChangeModeCallback(callback) {
+        this.#onChangeMode = callback;
     }
 }
 

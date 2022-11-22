@@ -23,6 +23,7 @@
 
         #releasedTime = -1;
 
+
         constructor(reader) {
             this.#reader = reader;
         }
@@ -50,6 +51,7 @@
         getPauseLength() {
             return this.#pauseTime;
         }
+
 
         pressKey() {
             if (this.#clickedTime !== -1) {
@@ -458,6 +460,8 @@
 
         #cyrillicTree = null;
 
+        #onChangeMode = () => {};
+
         constructor () {
             this.#tree = this.#latinTree = createMorseTree();
             this.#cyrillicTree = createCyrillicMorseTree();
@@ -472,12 +476,14 @@
             this.#pushCharacter();
             this.#tree = this.#cyrillicTree;
             this.#currentNode = this.#tree;
+            this.#onChangeMode('CYR');
         }
 
         switchToLatin() {
             this.#pushCharacter();
             this.#tree = this.#latinTree;
             this.#currentNode = this.#tree;
+            this.#onChangeMode('LAT');
         }
 
         toggleAlphabet() {
@@ -529,6 +535,10 @@
             const buffer = this.#buffer.join('');
             const currentChar = this.#currentNode.getChar();
             return buffer + currentChar;
+        }
+
+        setOnChangeModeCallback(callback) {
+            this.#onChangeMode = callback;
         }
     }
 
@@ -640,9 +650,11 @@
     let message;
     let beeptimer;
     let pausetimer;
+    let typingAlphabetLabel;
 
     const reader = new MorseReader();
     const key = new MorseKey(reader);
+    reader.setOnChangeModeCallback(changeMode);
 
     function startBeep(e) {
       e.preventDefault();
@@ -669,18 +681,21 @@
       beeptimer.stopTimer();
     }
 
-
+    function changeMode(newMode) {
+      typingAlphabetLabel.innerText = newMode;
+    }
 
     const onDocumentLoad = () => {
         button = document.getElementById("button");
         message = document.getElementById("message");
+        typingAlphabetLabel = document.querySelector("#button .js-key-button--aplphabet");
         beeptimer = new BeepTiming(
-          '#beeptimer', 
-          key.getDotLength(), 
-          key.getDashLength(), 
-          key.getDeleteLength(), 
+          '#beeptimer',
+          key.getDotLength(),
+          key.getDashLength(),
+          key.getDeleteLength(),
           key.getSwitchAlphabetLength()
-        ); 
+        );
         pausetimer = new PauseTiming(
           '#pausetimer',
           key.getCharacterSpacingLength(),
@@ -690,7 +705,6 @@
         button.addEventListener("mouseup", stopBeep);
         button.addEventListener("touchstart", startBeep);
         button.addEventListener("touchend", stopBeep);
-        button.addEventListener("click", stopBeep);
         button.addEventListener("click", stopBeep);
     };
 

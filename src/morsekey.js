@@ -1,3 +1,11 @@
+const MODE_IDLE = 0;
+const MODE_DOT = 1;
+const MODE_DASH = 2;
+const MODE_DELETE = 3;
+const MODE_CHANGE_ALPHABET = 4;
+const PAUSE_LETTER = 5;
+const PAUSE_SPACE = 6;
+
 class MorseKey {
 
     #debounceTimeout = 10;
@@ -19,6 +27,8 @@ class MorseKey {
     #clickedTime = -1;
 
     #releasedTime = -1;
+
+    #currentMode = MODE_IDLE;
 
     constructor(reader) {
         this.#reader = reader;
@@ -47,6 +57,7 @@ class MorseKey {
     getPauseLength() {
         return this.#pauseTime;
     }
+
 
     pressKey() {
         if (this.#clickedTime !== -1) {

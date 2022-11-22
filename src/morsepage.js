@@ -9,9 +9,11 @@ let button;
 let message;
 let beeptimer;
 let pausetimer;
+let typingAlphabetLabel;
 
 const reader = new MorseReader();
 const key = new MorseKey(reader);
+reader.setOnChangeModeCallback(changeMode);
 
 function startBeep(e) {
   e.preventDefault();
@@ -38,18 +40,25 @@ function stopBeep(e) {
   beeptimer.stopTimer();
 }
 
+function updateState(reader) {
+  message.innerText = reader.getBuffer();
+}
 
+function changeMode(newMode) {
+  typingAlphabetLabel.innerText = newMode;
+}
 
 const onDocumentLoad = () => {
     button = document.getElementById("button");
     message = document.getElementById("message");
+    typingAlphabetLabel = document.querySelector("#button .js-key-button--aplphabet");
     beeptimer = new BeepTiming(
-      '#beeptimer', 
-      key.getDotLength(), 
-      key.getDashLength(), 
-      key.getDeleteLength(), 
+      '#beeptimer',
+      key.getDotLength(),
+      key.getDashLength(),
+      key.getDeleteLength(),
       key.getSwitchAlphabetLength()
-    ); 
+    );
     pausetimer = new PauseTiming(
       '#pausetimer',
       key.getCharacterSpacingLength(),
@@ -59,7 +68,6 @@ const onDocumentLoad = () => {
     button.addEventListener("mouseup", stopBeep);
     button.addEventListener("touchstart", startBeep);
     button.addEventListener("touchend", stopBeep);
-    button.addEventListener("click", stopBeep);
     button.addEventListener("click", stopBeep);
 }
 
