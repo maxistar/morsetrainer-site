@@ -2,6 +2,7 @@ import createMorseTree from './createMorseTree';
 import createCyrillicMorseTree from './createCyrillicMorseTree';
 
 class MorseReader {
+    
     #buffer = [];
 
     #currentNode = null;

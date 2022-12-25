@@ -4,9 +4,8 @@ class BeepTiming {
     
     #timingBar;
 
-
-
     constructor (elementSelector, dotLength, dashLength, deleteLength, maxLength) {
+
         this.#timingBar = new TimingBar(`${elementSelector} .timer-bar--time`, maxLength);
         const dotTimingElement = document.querySelector(`${elementSelector} .timer-bar--dot`);
         const dashTimingElement = document.querySelector(`${elementSelector} .timer-bar--dash`);

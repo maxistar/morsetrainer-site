@@ -80,6 +80,7 @@ class MorseKey {
             return;
         }
         const newTime = (new Date()).getTime();
+        
         if (newTime - this.#clickedTime < this.#pointLength) {
             this.#reader.addDot();
         } else if (newTime - this.#clickedTime < this.#dashLength) {
@@ -89,7 +90,9 @@ class MorseKey {
         } else {
             this.#reader.toggleAlphabet();
         }
+
         this.#releasedTime = newTime;
+        
         this.#clickedTime = -1;
     }
 

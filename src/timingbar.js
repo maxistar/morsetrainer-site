@@ -1,6 +1,7 @@
 
 
 class TimingBar {
+
     #maxLength;
 
     #barElement;
@@ -12,8 +13,11 @@ class TimingBar {
     #timer = null;
 
     constructor(elementSelector, maxLength) {
+
         this.setMaxLength(maxLength);
+        
         this.#barElement = document.querySelector(elementSelector);
+        
         this.#barElement.style.width = '0%';
     }
 
@@ -41,8 +45,8 @@ class TimingBar {
         const newTime = (new Date()).getTime();
         const passedTime = newTime - this.#startedTime;
         if (passedTime > this.#maxLength) {
-        this.#barElement.style.width = '100%';
-        this.#timer = null;
+            this.#barElement.style.width = '100%';
+            this.#timer = null;
             return;
         }
 

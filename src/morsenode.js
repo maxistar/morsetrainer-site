@@ -1,5 +1,7 @@
 class MorseNode {
+
     dotNode = null;
+    
     dashNode = null;
 
     constructor(ch, dotNode, dashNode) {

@@ -52,6 +52,7 @@ const onDocumentLoad = () => {
     button = document.getElementById("button");
     message = document.getElementById("message");
     typingAlphabetLabel = document.querySelector("#button .js-key-button--aplphabet");
+
     beeptimer = new BeepTiming(
       '#beeptimer',
       key.getDotLength(),
@@ -59,11 +60,13 @@ const onDocumentLoad = () => {
       key.getDeleteLength(),
       key.getSwitchAlphabetLength()
     );
+    
     pausetimer = new PauseTiming(
       '#pausetimer',
       key.getCharacterSpacingLength(),
       key.getPauseLength()
     );
+    
     button.addEventListener("mousedown", startBeep);
     button.addEventListener("mouseup", stopBeep);
     button.addEventListener("touchstart", startBeep);
