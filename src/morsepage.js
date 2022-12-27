@@ -15,7 +15,7 @@ const reader = new MorseReader();
 const key = new MorseKey(reader);
 reader.setOnChangeModeCallback(changeMode);
 
-function startBeep(e) {
+function startClick(e) {
   e.preventDefault();
   if (pressed) {
       return;
@@ -27,7 +27,7 @@ function startBeep(e) {
   pausetimer.stopTimer();
 }
 
-function stopBeep(e) {
+function stopClick(e) {
   e.preventDefault();
   if (!pressed){
       return;
@@ -67,11 +67,11 @@ const onDocumentLoad = () => {
       key.getPauseLength()
     );
     
-    button.addEventListener("mousedown", startBeep);
-    button.addEventListener("mouseup", stopBeep);
-    button.addEventListener("touchstart", startBeep);
-    button.addEventListener("touchend", stopBeep);
-    button.addEventListener("click", stopBeep);
+    button.addEventListener("mousedown", startClick);
+    button.addEventListener("mouseup", stopClick);
+    button.addEventListener("touchstart", startClick);
+    button.addEventListener("touchend", stopClick);
+    button.addEventListener("click", stopClick);
 }
 
 export default onDocumentLoad;

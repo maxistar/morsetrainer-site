@@ -6,6 +6,12 @@ const MODE_CHANGE_ALPHABET = 4;
 const PAUSE_LETTER = 5;
 const PAUSE_SPACE = 6;
 
+
+/**
+ * clicked
+ * MODE_DOT --> MODE_DASH --> MODE_DELETE --> MODE_CHANGE_APLHABET --> MODE_IDLE
+ * PAUSE_LETTER --> PAUSE_SPACE
+ */
 class MorseKey {
 
     #debounceTimeout = 10;
