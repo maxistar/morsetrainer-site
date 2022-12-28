@@ -8,33 +8,49 @@ The urls is [morse.maxistar.me](https://morse.maxistar.me/)
 ## Online Key State Diagram
 
 
+### Key State Diagram:
+
 ```mermaid
 
 stateDiagram
-    Idle --> Dot: if clicked
-
-    Dot --> Dash: after DashTimeout
-
-    Dash --> Delete: after DeleteTimeout
+    Idle --> Dot: clicked, reader.addDot()
     
-    Delete --> SwitchAlphabet: after AlpahabetTimeout
-    
-    SwitchAlphabet --> Idle: after IddleTimeout
-    
-    Dot --> PauseLetter: release after t < DashTimeout
-    
-    Dash --> PauseLetter: release after t < DeleteTimeout
+    Dot --> Dash: t >= DashTimeout, reader.removeDot(), reader.addDash()
 
-    Delete --> PauseSpace: release after t < AlpahabetTimeout
-
-    SwitchAlphabet --> PauseSpace: release after t < IddleTimeout
-
-    PauseLetter --> PauseSpace: after SpaceTimeout
+    Dash --> Delete: after DeleteTimeout, morseReader.removeDash(), reader.removeLastCharacter()
     
-    PauseSpace --> Idle: after IddleTimeout
+    Delete --> SwitchAlphabet: after AlpahabetTimeout, reader.restoreRemovedCharacter(), reader.morseReaderSwitchAlpahabet()
+    
+    SwitchAlphabet --> Idle: after IddleTimeout, reader.cancelAlphabetSwitch()
+    
+    Dot --> PauseLetter: release, t < DashTimeout
+    
+    Dash --> PauseLetter: release, t < DeleteTimeout
+
+    Delete --> PauseSpace: release, t < AlpahabetTimeout
+
+    SwitchAlphabet --> PauseSpace: release,t < IddleTimeout
+
+    PauseLetter --> Dot: click, t < SpaceTimeout, reader.addDot()
+
+    PauseLetter --> PauseSpace: t >= SpaceTimeout, reader.addSpace()
+    
+    PauseSpace --> Idle: t >= IddleTimeout
+    
+    PauseSpace --> Dot: click, t < IddleTimeout, reader.addDot()
 
 ```
 
+### Entity relations Diagram:
+
+```mermaid
+erDiagram
+    MorsePage ||--o{ MorseReader : creates
+    MorsePage ||--|{ MorseKey : creates
+    MorsePage }|..|{ BeepTiming : creates
+    MorsePage }|..|{ PauseTiming : creates
+    MorseKey ||--o{ MorseReader: calls
+```
 
 ## Issues
 
