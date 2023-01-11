@@ -16,11 +16,11 @@ class AsyncMorseKey {
 
     #debounceTimeout = 10;
 
-    #pointLength = 500;
+    #maxDotDuration = 500;
 
-    #dashLength = 1500;
+    #maxDashDuration = 1500;
 
-    #deleteLength = 2500;
+    #maxDeleteDuration = 2500;
 
     #switchAlphabetLength = 3500;
 
@@ -36,20 +36,22 @@ class AsyncMorseKey {
 
     #currentMode = MODE_IDLE;
 
+    #currentPressTimeout = null;
+
     constructor(reader) {
         this.#reader = reader;
     }
 
-    getDotLength() {
-        return this.#pointLength;
+    getMaxDotDuration() {
+        return this.#maxDotDuration;
     }
 
-    getDashLength() {
-        return this.#dashLength;
+    getMaxDashDuration() {
+        return this.#maxDashDuration;
     }
 
-    getDeleteLength() {
-        return this.#deleteLength;
+    getMaxDeleteDuration() {
+        return this.#maxDeleteDuration;
     }
 
     getSwitchAlphabetLength() {
@@ -66,10 +68,10 @@ class AsyncMorseKey {
 
 
     pressKey() {
-        //if (this.#clickedTime !== -1) {
-        //    return;
-        //}
-        //this.#clickedTime = (new Date()).getTime();
+        if (this.#clickedTime !== -1) {
+            return;
+        }
+        this.#clickedTime = (new Date()).getTime();
 
         //if (this.#releasedTime !== -1) {
         //    if (this.#clickedTime - this.#releasedTime > this.#pauseTime) {
@@ -80,27 +82,85 @@ class AsyncMorseKey {
         //    }
         //}
         this.#reader.addDot();
+        this.#sheduleDashTimeout();
     }
 
     releaseKey() {
         if (this.#clickedTime === -1) {
             return;
         }
-        const newTime = (new Date()).getTime();
-        
-        if (newTime - this.#clickedTime < this.#pointLength) {
+ 
+        this.#clearClickTimeout();
+        const newTime = this.#releasedTime = (new Date()).getTime();
+        const $difference = newTime - this.#clickedTime;
+        this.#clickedTime = -1;
+
+
+        /*
+        if ($difference < this.#maxDotDuration) {
             this.#reader.addDot();
-        } else if (newTime - this.#clickedTime < this.#dashLength) {
+        } else if ($difference < this.#maxDashDuration) {
             this.#reader.addDash();
-        } else if (newTime - this.#clickedTime < this.#deleteLength) {
+        } else if ($difference < this.#deleteLength) {
             this.#reader.deleteLastCharacter();
         } else {
             this.#reader.toggleAlphabet();
-        }
+        } */
 
-        this.#releasedTime = newTime;
-        
-        this.#clickedTime = -1;
+    }
+
+    #clearClickTimeout() {
+        if (this.#currentPressTimeout !== null) {
+            clearTimeout(this.#currentPressTimeout);
+            this.#currentPressTimeout = null;
+        }
+    }
+
+    #sheduleDashTimeout() {
+        this.#currentPressTimeout = setTimeout(
+            () => {
+                this.#currentPressTimeout = null;
+                this.#switchToDash();
+            }, 
+            this.#maxDotDuration
+        ); 
+    }
+
+    #sheduleDeleteTimeout() {
+        this.#currentPressTimeout = setTimeout(
+            () => {
+                this.#currentPressTimeout = null;
+                this.#switchToDelete();
+            }, 
+            this.#maxDashDuration - this.#maxDotDuration
+        );
+    }
+
+    #sheduleSwitchAlphabetTimeout() {
+        this.#currentPressTimeout = setTimeout(
+            () => {
+                this.#currentPressTimeout = null;
+                this.#switchAlphabet();
+            }, 
+            this.#maxDeleteDuration - this.#maxDashDuration
+        );
+    }
+
+    #switchToDash() {
+        // console.log('swith to dash!!!');
+        this.#reader.removeDot(); 
+        this.#reader.addDash();
+        this.#sheduleDeleteTimeout();
+    }
+
+    #switchToDelete() {
+        this.#reader.removeDash();
+        this.#reader.removeLastCharacter();
+        this.#sheduleSwitchAlphabetTimeout();
+    }
+
+    #switchAlphabet() {
+        this.#reader.switchAlphabet();
     }
 
 }
