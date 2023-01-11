@@ -15,15 +15,15 @@ The urls is [morse.maxistar.me](https://morse.maxistar.me/)
 stateDiagram
     Idle --> Dot: clicked, reader.addDot()
     
-    Dot --> Dash: t >= DashTimeout, reader.removeDot(), reader.addDash()
+    Dot --> Dash: t >= MaxDotDuration, reader.removeDot(), reader.addDash()
 
     Dash --> Delete: after DeleteTimeout, morseReader.removeDash(), reader.removeLastCharacter()
     
-    Delete --> SwitchAlphabet: after AlpahabetTimeout, reader.restoreRemovedCharacter(), reader.morseReaderSwitchAlpahabet()
+    Delete --> SwitchAlphabet: after AlpahabetTimeout, reader.morseReaderSwitchAlpahabet()
     
-    SwitchAlphabet --> Idle: after IddleTimeout, reader.cancelAlphabetSwitch()
+    SwitchAlphabet --> Idle: after IddleTimeout, reader.restoreRemovedCharacter() ,reader.cancelAlphabetSwitch()
     
-    Dot --> PauseLetter: release, t < DashTimeout
+    Dot --> PauseLetter: release, t < MaxDotDuration
     
     Dash --> PauseLetter: release, t < DeleteTimeout
 
