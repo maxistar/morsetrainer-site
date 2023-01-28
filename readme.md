@@ -4,6 +4,13 @@ Simple webpage for [android morsetrainer](https://github.com/maxistar/morsetrain
 
 The urls is [morse.maxistar.me](https://morse.maxistar.me/)
 
+## How to compile locally
+
+npm install
+
+## How to test
+
+npm test
 
 ## Online Key State Diagram
 
