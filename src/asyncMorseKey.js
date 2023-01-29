@@ -1,10 +1,10 @@
-const MODE_IDLE = 0;
-const MODE_DOT = 1;
-const MODE_DASH = 2;
-const MODE_DELETE = 3;
-const MODE_CHANGE_ALPHABET = 4;
-const PAUSE_LETTER = 5;
-const PAUSE_SPACE = 6;
+export const MODE_IDLE = 0;
+export const MODE_DOT = 1;
+export const MODE_DASH = 2;
+export const MODE_DELETE = 3;
+export const MODE_CHANGE_ALPHABET = 4;
+export const MODE_PAUSE_LETTER = 5;
+export const MODE_PAUSE_SPACE = 6;
 
 
 /**
@@ -12,7 +12,7 @@ const PAUSE_SPACE = 6;
  * MODE_DOT --> MODE_DASH --> MODE_DELETE --> MODE_CHANGE_APLHABET --> MODE_IDLE
  * PAUSE_LETTER --> PAUSE_SPACE
  */
-class AsyncMorseKey {
+export class AsyncMorseKey {
 
     #debounceTimeout = 10;
 
@@ -42,6 +42,10 @@ class AsyncMorseKey {
         this.#reader = reader;
     }
 
+    getMode() {
+        return this.#currentMode;
+    }
+
     getMaxDotDuration() {
         return this.#maxDotDuration;
     }
@@ -60,6 +64,10 @@ class AsyncMorseKey {
 
     getCharacterSpacingLength() {
         return this.#characterSpacing;
+    }
+
+    getPauseTime() {
+        return this.#pauseTime;
     }
 
     getPauseLength() {
@@ -83,6 +91,7 @@ class AsyncMorseKey {
         //}
         this.#reader.addDot();
         this.#sheduleDashTimeout();
+        this.#currentMode = MODE_DOT
     }
 
     releaseKey() {
@@ -94,7 +103,7 @@ class AsyncMorseKey {
         const newTime = this.#releasedTime = (new Date()).getTime();
         const $difference = newTime - this.#clickedTime;
         this.#clickedTime = -1;
-
+        this.#currentMode = MODE_PAUSE_LETTER;
 
         /*
         if ($difference < this.#maxDotDuration) {
@@ -148,21 +157,24 @@ class AsyncMorseKey {
 
     #switchToDash() {
         // console.log('swith to dash!!!');
+        this.#currentMode = MODE_DASH;
         this.#reader.removeDot(); 
         this.#reader.addDash();
         this.#sheduleDeleteTimeout();
     }
 
     #switchToDelete() {
+        this.#currentMode = MODE_DELETE;
         this.#reader.removeDash();
         this.#reader.removeLastCharacter();
         this.#sheduleSwitchAlphabetTimeout();
     }
 
     #switchAlphabet() {
+        this.#currentMode = MODE_CHANGE_ALPHABET;
         this.#reader.switchAlphabet();
     }
 
 }
 
-export default AsyncMorseKey;
+export default { AsyncMorseKey };
