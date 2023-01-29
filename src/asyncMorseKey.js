@@ -90,7 +90,7 @@ export class AsyncMorseKey {
         //    }
         //}
         this.#reader.addDot();
-        this.#sheduleDashTimeout();
+        this.#scheduleDashTimeout();
         this.#currentMode = MODE_DOT
     }
 
@@ -98,8 +98,9 @@ export class AsyncMorseKey {
         if (this.#clickedTime === -1) {
             return;
         }
- 
+
         this.#clearClickTimeout();
+        this.#schedulePauseMode();
         const newTime = this.#releasedTime = (new Date()).getTime();
         const $difference = newTime - this.#clickedTime;
         this.#clickedTime = -1;
@@ -125,49 +126,78 @@ export class AsyncMorseKey {
         }
     }
 
-    #sheduleDashTimeout() {
+    #scheduleDashTimeout() {
         this.#currentPressTimeout = setTimeout(
             () => {
                 this.#currentPressTimeout = null;
                 this.#switchToDash();
-            }, 
+            },
             this.#maxDotDuration
-        ); 
+        );
     }
 
-    #sheduleDeleteTimeout() {
+    #scheduleDeleteTimeout() {
         this.#currentPressTimeout = setTimeout(
             () => {
                 this.#currentPressTimeout = null;
                 this.#switchToDelete();
-            }, 
+            },
             this.#maxDashDuration - this.#maxDotDuration
         );
     }
 
-    #sheduleSwitchAlphabetTimeout() {
+    #scheduleSwitchAlphabetTimeout() {
         this.#currentPressTimeout = setTimeout(
             () => {
                 this.#currentPressTimeout = null;
                 this.#switchAlphabet();
-            }, 
+            },
             this.#maxDeleteDuration - this.#maxDashDuration
         );
+    }
+
+    #schedulePauseMode() {
+        this.#currentPressTimeout = setTimeout(
+            () => {
+                this.#currentPressTimeout = null;
+                this.#switchSpacePause();
+            },
+            this.#characterSpacing
+        );
+    }
+
+    #scheduleIdleMode() {
+        this.#currentPressTimeout = setTimeout(
+            () => {
+                this.#currentPressTimeout = null;
+                this.#switchToIdleMode();
+            },
+            this.#pauseTime - this.#characterSpacing
+        );
+    }
+
+    #switchSpacePause() {
+        this.#scheduleIdleMode();
+        this.#currentMode = MODE_PAUSE_SPACE;
+    }
+
+    #switchToIdleMode() {
+        this.#currentMode = MODE_IDLE;
     }
 
     #switchToDash() {
         // console.log('swith to dash!!!');
         this.#currentMode = MODE_DASH;
-        this.#reader.removeDot(); 
+        this.#reader.removeDot();
         this.#reader.addDash();
-        this.#sheduleDeleteTimeout();
+        this.#scheduleDeleteTimeout();
     }
 
     #switchToDelete() {
         this.#currentMode = MODE_DELETE;
         this.#reader.removeDash();
         this.#reader.removeLastCharacter();
-        this.#sheduleSwitchAlphabetTimeout();
+        this.#scheduleSwitchAlphabetTimeout();
     }
 
     #switchAlphabet() {
