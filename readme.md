@@ -20,31 +20,31 @@ npm test
 ```mermaid
 
 stateDiagram
-    Idle --> Dot: clicked, reader.addDot()
+    Idle --> Dot: (p1), clicked, reader.addDot()
     
-    Dot --> Dash: t >= MaxDotDuration, reader.removeDot(), reader.addDash()
+    Dot --> Dash: (p2) t >= MaxDotDuration, reader.removeDot(), reader.addDash()
 
-    Dash --> Delete: after DeleteTimeout, morseReader.removeDash(), reader.removeLastCharacter()
+    Dash --> Delete: (p3) after DeleteTimeout, morseReader.removeDash(), reader.removeLastCharacter()
     
-    Delete --> SwitchAlphabet: after AlpahabetTimeout, reader.morseReaderSwitchAlpahabet()
+    Delete --> SwitchAlphabet: (p4) after AlpahabetTimeout, reader.morseReaderSwitchAlpahabet()
     
-    SwitchAlphabet --> Idle: after IddleTimeout, reader.restoreRemovedCharacter() ,reader.cancelAlphabetSwitch()
+    SwitchAlphabet --> Idle: (p5) after IddleTimeout, reader.restoreRemovedCharacter() ,reader.cancelAlphabetSwitch()
     
-    Dot --> PauseLetter: release, t < MaxDotDuration
+    Dot --> PauseLetter: (p6) release, t < MaxDotDuration
     
-    Dash --> PauseLetter: release, t < DeleteTimeout
+    Dash --> PauseLetter: (p7) release, t < DeleteTimeout
 
-    Delete --> PauseSpace: release, t < AlpahabetTimeout
+    Delete --> PauseSpace: (p8) release, t < AlpahabetTimeout
 
-    SwitchAlphabet --> PauseSpace: release,t < IddleTimeout
+    SwitchAlphabet --> PauseSpace: (p9) release,t < IddleTimeout
 
-    PauseLetter --> Dot: click, t < SpaceTimeout, reader.addDot()
+    PauseLetter --> Dot: (p10) click, t < SpaceTimeout, reader.addDot()
 
-    PauseLetter --> PauseSpace: t >= SpaceTimeout, reader.addSpace()
+    PauseLetter --> PauseSpace: (p11) t >= SpaceTimeout, reader.addSpace()
     
-    PauseSpace --> Idle: t >= IddleTimeout
+    PauseSpace --> Idle: (p12) t >= IddleTimeout
     
-    PauseSpace --> Dot: click, t < IddleTimeout, reader.addDot()
+    PauseSpace --> Dot: (p13) click, t < IddleTimeout, reader.addDot()
 
 ```
 
