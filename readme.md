@@ -40,9 +40,9 @@ stateDiagram
 
     PauseLetter --> Dot: (p10) click, t < SpaceTimeout, reader.addDot()
 
-    PauseLetter --> PauseSpace: (p11) t >= SpaceTimeout, reader.addSpace()
+    PauseLetter --> PauseSpace: (p11) t >= SpaceTimeout, reader.completeCharacter()
     
-    PauseSpace --> Idle: (p12) t >= IddleTimeout
+    PauseSpace --> Idle: (p12) t >= IddleTimeout, reader.addSpace()
     
     PauseSpace --> Dot: (p13) click, t < IddleTimeout, reader.addDot()
 
