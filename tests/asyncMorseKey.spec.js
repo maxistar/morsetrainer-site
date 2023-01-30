@@ -51,7 +51,7 @@ describe("morse key", () => {
     })
 
 
-    it("p1: when key pressed then released pass to waiting state", () => {
+    it("p1, p6: when key pressed then released pass to waiting state", () => {
         key.pressKey();
         expect(reader.addDot.mock.calls).toHaveLength(1);
         key.releaseKey();
@@ -64,19 +64,18 @@ describe("morse key", () => {
     })
 
 
-    it("p1: when key pressed then released after long time changes to waiting state", () => {
+    it("p1, p6, p11: when key pressed then released after long time changes to waiting state", () => {
         key.pressKey();
         expect(reader.addDot.mock.calls).toHaveLength(1);
         key.releaseKey();
 
         jest.advanceTimersByTime(key.getCharacterSpacingLength() + 100);
-        //expect(reader.addDot.mock.calls).toHaveLength(2);
 
         expect(key.getMode()).toEqual(MODE_PAUSE_SPACE)
 
     })
 
-    it("p1: when key pressed then released after longer time changes to idle state", () => {
+    it("p1, p6, p11, p12: when key pressed then released after longer time changes to idle state", () => {
         key.pressKey();
         expect(reader.addDot.mock.calls).toHaveLength(1);
         key.releaseKey();
