@@ -34,7 +34,7 @@ stateDiagram
     
     Dash --> PauseLetter: (p7) release, t < DeleteTimeout
 
-    Delete --> PauseSpace: (p8) release, t < AlpahabetTimeout
+    Delete --> Idle: (p8) release, t < AlpahabetTimeout
 
     SwitchAlphabet --> PauseSpace: (p9) release,t < IddleTimeout
 

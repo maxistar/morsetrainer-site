@@ -22,7 +22,7 @@ export class AsyncMorseKey {
 
     #maxDeleteDuration = 2500;
 
-    #switchAlphabetLength = 3500;
+    #maxSwitchAlphabetLength = 3500;
 
     #characterSpacing = 800;
 
@@ -59,7 +59,7 @@ export class AsyncMorseKey {
     }
 
     getSwitchAlphabetLength() {
-        return this.#switchAlphabetLength;
+        return this.#maxSwitchAlphabetLength;
     }
 
     getCharacterSpacingLength() {
@@ -104,8 +104,15 @@ export class AsyncMorseKey {
         const newTime = this.#releasedTime = (new Date()).getTime();
         const $difference = newTime - this.#clickedTime;
         this.#clickedTime = -1;
-        this.#currentMode = MODE_PAUSE_LETTER;
-
+        if (this.#currentMode === MODE_DELETE) {
+            this.#currentMode = MODE_IDLE;
+        } else if (this.#currentMode === MODE_CHANGE_ALPHABET) {
+            this.#currentMode = MODE_PAUSE_SPACE;
+        } else if (this.#currentMode === MODE_IDLE) {
+            //noting todo
+        } else {
+            this.#currentMode = MODE_PAUSE_LETTER;
+        }
         /*
         if ($difference < this.#maxDotDuration) {
             this.#reader.addDot();
@@ -156,6 +163,16 @@ export class AsyncMorseKey {
         );
     }
 
+    #scheduleSwitchIdleTimeout() {
+        this.#currentPressTimeout = setTimeout(
+            () => {
+                this.#currentPressTimeout = null;
+                this.#switchToIdleMode();
+            },
+            this.#maxSwitchAlphabetLength - this.#maxDeleteDuration
+        );
+    }
+
     #schedulePauseMode() {
         this.#currentPressTimeout = setTimeout(
             () => {
@@ -203,6 +220,7 @@ export class AsyncMorseKey {
     #switchAlphabet() {
         this.#currentMode = MODE_CHANGE_ALPHABET;
         this.#reader.switchAlphabet();
+        this.#scheduleSwitchIdleTimeout()
     }
 
 }
