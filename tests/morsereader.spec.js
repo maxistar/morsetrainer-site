@@ -1,5 +1,4 @@
 import MorseReader from "../src/morsereader";
-import {jest} from '@jest/globals';
 
 const applyCommands = (reader, morseCode) => {
 
@@ -101,7 +100,7 @@ describe("morse reader", () => {
                 const reader = new MorseReader();
                 const morseCode = test[1];
                 applyCommands(reader, morseCode);
-                expect(reader.getBuffer()).toEqual(test[0]);;
+                expect(reader.getBuffer()).toEqual(test[0]);
 
             });
         })
@@ -122,7 +121,7 @@ describe("morse reader", () => {
                 const reader = new MorseReader();
                 const morseCode = test[1];
                 applyCommands(reader, morseCode);
-                expect(reader.getBuffer()).toEqual(test[0]);;
+                expect(reader.getBuffer()).toEqual(test[0]);
 
             });
         })
@@ -176,7 +175,7 @@ describe("morse reader", () => {
                 reader.switchToCyrillic();
                 const morseCode = test[1];
                 applyCommands(reader, morseCode);
-                expect(reader.getBuffer()).toEqual(test[0]);;
+                expect(reader.getBuffer()).toEqual(test[0]);
 
             });
         })
@@ -198,7 +197,7 @@ describe("morse reader", () => {
                 const reader = new MorseReader();
                 const morseCode = test[1];
                 applyCommands(reader, morseCode);
-                expect(reader.getBuffer()).toEqual(test[0]);;
+                expect(reader.getBuffer()).toEqual(test[0]);
 
             });
         })
@@ -218,7 +217,7 @@ describe("morse reader", () => {
                 const reader = new MorseReader();
                 const morseCode = test[1];
                 applyCommands(reader, morseCode);
-                expect(reader.getBuffer()).toEqual(test[0]);;
+                expect(reader.getBuffer()).toEqual(test[0]);
 
             });
         })

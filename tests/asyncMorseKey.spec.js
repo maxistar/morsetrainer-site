@@ -112,7 +112,23 @@ describe("morse key", () => {
         expect(key.getMode()).toEqual(MODE_DELETE)
     })
 
-    it("p1, p2, p3, p4: when key pressed longer then max delete time: switch alpahbet", () => {
+    it("p1, p2, p7, p10: when key pressed longer then max dash time: remove Dash, the complete last character is removed", () => {
+        key.pressKey()
+        jest.advanceTimersByTime(key.getMaxDotDuration() + 100);
+
+        expect(reader.removeDot.mock.calls).toHaveLength(1)
+        expect(reader.addDash.mock.calls).toHaveLength(1)
+
+        key.releaseKey()
+
+        expect(key.getMode()).toEqual(MODE_PAUSE_LETTER)
+
+        key.pressKey()
+
+        expect(key.getMode()).toEqual(MODE_DOT)
+    })
+
+    it("p1, p2, p3, p4, p9: when key pressed longer then max delete time: switch alpahbet", () => {
         key.pressKey()
         jest.advanceTimersByTime(key.getMaxDotDuration() + 100);
 
@@ -128,6 +144,53 @@ describe("morse key", () => {
 
         expect(reader.switchAlphabet.mock.calls).toHaveLength(1)
         expect(key.getMode()).toEqual(MODE_CHANGE_ALPHABET)
+
+        key.releaseKey()
+        expect(key.getMode()).toEqual(MODE_PAUSE_SPACE)
+    })
+
+    it("p1, p2, p3, p4, p5, p14: when key pressed longer then max delete time: switch alpahbet", () => {
+        key.pressKey()
+        jest.advanceTimersByTime(key.getMaxDotDuration() + 100);
+
+        expect(reader.removeDot.mock.calls).toHaveLength(1)
+        expect(reader.addDash.mock.calls).toHaveLength(1)
+
+        jest.advanceTimersByTime(key.getMaxDashDuration() - key.getMaxDotDuration());
+
+        expect(reader.removeDash.mock.calls).toHaveLength(1)
+        expect(reader.removeLastCharacter.mock.calls).toHaveLength(1)
+
+        jest.advanceTimersByTime(key.getMaxDeleteDuration() - key.getMaxDashDuration());
+
+        expect(reader.switchAlphabet.mock.calls).toHaveLength(1)
+        expect(key.getMode()).toEqual(MODE_CHANGE_ALPHABET)
+
+        jest.advanceTimersByTime(key.getSwitchAlphabetLength() - key.getMaxDeleteDuration());
+
+        expect(key.getMode()).toEqual(MODE_IDLE)
+
+        key.releaseKey()
+
+        expect(key.getMode()).toEqual(MODE_IDLE)
+    })
+
+    it("p1, p2, p3, p8: when key pressed longer then max dash time then released, call delete last character and switch to idle", () => {
+        key.pressKey()
+        jest.advanceTimersByTime(key.getMaxDotDuration() + 100);
+
+        expect(reader.removeDot.mock.calls).toHaveLength(1)
+        expect(reader.addDash.mock.calls).toHaveLength(1)
+
+        jest.advanceTimersByTime(key.getMaxDashDuration() - key.getMaxDotDuration());
+
+        expect(reader.removeDash.mock.calls).toHaveLength(1)
+        expect(reader.removeLastCharacter.mock.calls).toHaveLength(1)
+        expect(key.getMode()).toEqual(MODE_DELETE)
+
+        key.releaseKey()
+
+        expect(key.getMode()).toEqual(MODE_IDLE)
     })
 
 })
