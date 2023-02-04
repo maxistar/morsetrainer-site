@@ -157,7 +157,7 @@ export class AsyncMorseKey {
         this.#currentPressTimeout = setTimeout(
             () => {
                 this.#currentPressTimeout = null;
-                this.#switchAlphabet();
+                this.#toggleAlphabet();
             },
             this.#maxDeleteDuration - this.#maxDashDuration
         );
@@ -205,21 +205,21 @@ export class AsyncMorseKey {
     #switchToDash() {
         // console.log('swith to dash!!!');
         this.#currentMode = MODE_DASH;
-        this.#reader.removeDot();
+        this.#reader.stepBackward();
         this.#reader.addDash();
         this.#scheduleDeleteTimeout();
     }
 
     #switchToDelete() {
         this.#currentMode = MODE_DELETE;
-        this.#reader.removeDash();
-        this.#reader.removeLastCharacter();
+        this.#reader.stepBackward();
+        this.#reader.deleteLastCharacter();
         this.#scheduleSwitchAlphabetTimeout();
     }
 
-    #switchAlphabet() {
+    #toggleAlphabet() {
         this.#currentMode = MODE_CHANGE_ALPHABET;
-        this.#reader.switchAlphabet();
+        this.#reader.toggleAlphabet();
         this.#scheduleSwitchIdleTimeout()
     }
 

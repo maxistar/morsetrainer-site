@@ -1,8 +1,9 @@
 import createMorseTree from './createMorseTree';
 import createCyrillicMorseTree from './createCyrillicMorseTree';
+import {jest} from "@jest/globals";
 
 class MorseReader {
-    
+
     #buffer = [];
 
     #currentNode = null;
@@ -50,6 +51,7 @@ class MorseReader {
     }
 
     addDash () {
+        this.#previousNode = this.#currentNode;
         if (this.#currentNode.hasDashNode()) {
             this.#currentNode = this.#currentNode.getDashNode();
         } else {
