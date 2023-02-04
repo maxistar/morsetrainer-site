@@ -20,11 +20,10 @@ describe("morse key", () => {
 
         reader = {
             addDot: jest.fn(),
-            removeDot: jest.fn(),
+            stepBackward: jest.fn(),
             addDash: jest.fn(),
-            removeDash: jest.fn(),
-            removeLastCharacter: jest.fn(),
-            switchAlphabet: jest.fn(),
+            deleteLastCharacter: jest.fn(),
+            toggleAlphabet: jest.fn(),
         }
         key = new AsyncMorseKey(reader);
     });
@@ -91,7 +90,7 @@ describe("morse key", () => {
         key.pressKey()
         jest.advanceTimersByTime(key.getMaxDotDuration() + 100);
 
-        expect(reader.removeDot.mock.calls).toHaveLength(1)
+        expect(reader.stepBackward.mock.calls).toHaveLength(1)
         expect(reader.addDash.mock.calls).toHaveLength(1)
 
         expect(key.getMode()).toEqual(MODE_DASH)
@@ -101,13 +100,13 @@ describe("morse key", () => {
         key.pressKey()
         jest.advanceTimersByTime(key.getMaxDotDuration() + 100);
 
-        expect(reader.removeDot.mock.calls).toHaveLength(1)
+        expect(reader.stepBackward.mock.calls).toHaveLength(1)
         expect(reader.addDash.mock.calls).toHaveLength(1)
 
         jest.advanceTimersByTime(key.getMaxDashDuration() - key.getMaxDotDuration());
 
-        expect(reader.removeDash.mock.calls).toHaveLength(1)
-        expect(reader.removeLastCharacter.mock.calls).toHaveLength(1)
+        expect(reader.stepBackward.mock.calls).toHaveLength(2)
+        expect(reader.deleteLastCharacter.mock.calls).toHaveLength(1)
 
         expect(key.getMode()).toEqual(MODE_DELETE)
     })
@@ -116,7 +115,7 @@ describe("morse key", () => {
         key.pressKey()
         jest.advanceTimersByTime(key.getMaxDotDuration() + 100);
 
-        expect(reader.removeDot.mock.calls).toHaveLength(1)
+        expect(reader.stepBackward.mock.calls).toHaveLength(1)
         expect(reader.addDash.mock.calls).toHaveLength(1)
 
         key.releaseKey()
@@ -128,42 +127,42 @@ describe("morse key", () => {
         expect(key.getMode()).toEqual(MODE_DOT)
     })
 
-    it("p1, p2, p3, p4, p9: when key pressed longer then max delete time: switch alpahbet", () => {
+    it("p1, p2, p3, p4, p9: when key pressed longer then max delete time: toggle alpahbet", () => {
         key.pressKey()
         jest.advanceTimersByTime(key.getMaxDotDuration() + 100);
 
-        expect(reader.removeDot.mock.calls).toHaveLength(1)
+        expect(reader.stepBackward.mock.calls).toHaveLength(1)
         expect(reader.addDash.mock.calls).toHaveLength(1)
 
         jest.advanceTimersByTime(key.getMaxDashDuration() - key.getMaxDotDuration());
 
-        expect(reader.removeDash.mock.calls).toHaveLength(1)
-        expect(reader.removeLastCharacter.mock.calls).toHaveLength(1)
+        expect(reader.stepBackward.mock.calls).toHaveLength(2)
+        expect(reader.deleteLastCharacter.mock.calls).toHaveLength(1)
 
         jest.advanceTimersByTime(key.getMaxDeleteDuration() - key.getMaxDashDuration());
 
-        expect(reader.switchAlphabet.mock.calls).toHaveLength(1)
+        expect(reader.toggleAlphabet.mock.calls).toHaveLength(1)
         expect(key.getMode()).toEqual(MODE_CHANGE_ALPHABET)
 
         key.releaseKey()
         expect(key.getMode()).toEqual(MODE_PAUSE_SPACE)
     })
 
-    it("p1, p2, p3, p4, p5, p14: when key pressed longer then max delete time: switch alpahbet", () => {
+    it("p1, p2, p3, p4, p5, p14: when key pressed longer then max delete time: toggle alpahbet", () => {
         key.pressKey()
         jest.advanceTimersByTime(key.getMaxDotDuration() + 100);
 
-        expect(reader.removeDot.mock.calls).toHaveLength(1)
+        expect(reader.stepBackward.mock.calls).toHaveLength(1)
         expect(reader.addDash.mock.calls).toHaveLength(1)
 
         jest.advanceTimersByTime(key.getMaxDashDuration() - key.getMaxDotDuration());
 
-        expect(reader.removeDash.mock.calls).toHaveLength(1)
-        expect(reader.removeLastCharacter.mock.calls).toHaveLength(1)
+        expect(reader.stepBackward.mock.calls).toHaveLength(2)
+        expect(reader.deleteLastCharacter.mock.calls).toHaveLength(1)
 
         jest.advanceTimersByTime(key.getMaxDeleteDuration() - key.getMaxDashDuration());
 
-        expect(reader.switchAlphabet.mock.calls).toHaveLength(1)
+        expect(reader.toggleAlphabet.mock.calls).toHaveLength(1)
         expect(key.getMode()).toEqual(MODE_CHANGE_ALPHABET)
 
         jest.advanceTimersByTime(key.getSwitchAlphabetLength() - key.getMaxDeleteDuration());
@@ -179,13 +178,13 @@ describe("morse key", () => {
         key.pressKey()
         jest.advanceTimersByTime(key.getMaxDotDuration() + 100);
 
-        expect(reader.removeDot.mock.calls).toHaveLength(1)
+        expect(reader.stepBackward.mock.calls).toHaveLength(1)
         expect(reader.addDash.mock.calls).toHaveLength(1)
 
         jest.advanceTimersByTime(key.getMaxDashDuration() - key.getMaxDotDuration());
 
-        expect(reader.removeDash.mock.calls).toHaveLength(1)
-        expect(reader.removeLastCharacter.mock.calls).toHaveLength(1)
+        expect(reader.stepBackward.mock.calls).toHaveLength(2)
+        expect(reader.deleteLastCharacter.mock.calls).toHaveLength(1)
         expect(key.getMode()).toEqual(MODE_DELETE)
 
         key.releaseKey()

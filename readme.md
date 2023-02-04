@@ -24,11 +24,11 @@ stateDiagram
     
     Dot --> Dash: (p2) t >= MaxDotDuration, reader.removeDot(), reader.addDash()
 
-    Dash --> Delete: (p3) after DeleteTimeout, morseReader.removeDash(), reader.removeLastCharacter()
+    Dash --> Delete: (p3) after DeleteTimeout, morseReader.stepBackward(), reader.deleteLastCharacter()
     
-    Delete --> SwitchAlphabet: (p4) after AlpahabetTimeout, reader.morseReaderSwitchAlpahabet()
+    Delete --> SwitchAlphabet: (p4) after AlpahabetTimeout, reader.toggleAlpahabet()
     
-    SwitchAlphabet --> Idle: (p5) after IddleTimeout, reader.restoreRemovedCharacter() ,reader.cancelAlphabetSwitch()
+    SwitchAlphabet --> Idle: (p5) after IddleTimeout, reader.restoreRemovedCharacter() ,reader.toggleAlphabet()
     
     Dot --> PauseLetter: (p6) release, t < MaxDotDuration
     

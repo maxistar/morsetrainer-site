@@ -14,6 +14,8 @@ const applyCommands = (reader, morseCode) => {
             reader.deleteLastCharacter();
         } else if (ch === 'S') {
             reader.toggleAlphabet();
+        } else if (ch === 'B') {
+            reader.stepBackward();
         } else {
             reader.addPause();
         }
@@ -219,6 +221,24 @@ describe("morse reader", () => {
                 applyCommands(reader, morseCode);
                 expect(reader.getBuffer()).toEqual(test[0]);
 
+            });
+        })
+    })
+
+    describe("step backward works as expected", () => {
+        const testCases = [
+            ['t', "-.B"],
+            ['t', "--B"],
+        ];
+
+        testCases.forEach((test) => {
+
+            it(`${test[1]} should return ${test[0]}`, () => {
+
+                const reader = new MorseReader();
+                const morseCode = test[1];
+                applyCommands(reader, morseCode);
+                expect(reader.getBuffer()).toEqual(test[0]);
             });
         })
     })
