@@ -1,5 +1,4 @@
 import MorseNode from "../src/morsenode";
-import { jest } from '@jest/globals';
 
 describe("morse node", () => {
 
