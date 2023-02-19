@@ -8,8 +8,6 @@ import {
     MODE_PAUSE_LETTER,
     MODE_PAUSE_SPACE, MODE_IDLE
 } from "../src/asyncMorseKey";
-// import morseReader from "./__mocks__/MorseReader";
-
 
 describe("morse key", () => {
 

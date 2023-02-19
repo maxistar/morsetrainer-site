@@ -195,7 +195,6 @@ describe("morse reader", () => {
         testCases.forEach((test) => {
 
             it(`${test[1]} should return ${test[0]}`, () => {
-
                 const reader = new MorseReader();
                 const morseCode = test[1];
                 applyCommands(reader, morseCode);
@@ -213,14 +212,11 @@ describe("morse reader", () => {
         ];
 
         testCases.forEach((test) => {
-
             it(`${test[1]} should return ${test[0]}`, () => {
-
                 const reader = new MorseReader();
                 const morseCode = test[1];
                 applyCommands(reader, morseCode);
                 expect(reader.getBuffer()).toEqual(test[0]);
-
             });
         })
     })
@@ -232,9 +228,7 @@ describe("morse reader", () => {
         ];
 
         testCases.forEach((test) => {
-
             it(`${test[1]} should return ${test[0]}`, () => {
-
                 const reader = new MorseReader();
                 const morseCode = test[1];
                 applyCommands(reader, morseCode);
@@ -242,7 +236,6 @@ describe("morse reader", () => {
             });
         })
     })
-
 
 })
 

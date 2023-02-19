@@ -83,7 +83,6 @@ describe("morse key", () => {
         jest.advanceTimersByTime(800);
         key.releaseKey();
 
-
         key.pressKey();
         jest.advanceTimersByTime(800);
         key.releaseKey();
@@ -95,7 +94,6 @@ describe("morse key", () => {
         key.pressKey();
         jest.advanceTimersByTime(800);
         key.releaseKey();
-
 
         jest.advanceTimersByTime(1100);
 
@@ -141,7 +139,6 @@ describe("morse key", () => {
         jest.advanceTimersByTime(800);
         key.releaseKey();
 
-
         jest.advanceTimersByTime(1200);
 
         key.pressKey();
@@ -157,6 +154,5 @@ describe("morse key", () => {
 
         expect(reader.getBuffer()).toEqual('tт');
     })
-
 
 })
