@@ -6,8 +6,6 @@
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules node node_modules/jest/bin/jest --env=jsdom",
     "test:watch": "npm test -- --watch",
-    "index": "node notesindexing.js",
-    "makepages": "node makepages.js",
     "build": "node node_modules/rollup/dist/bin/rollup -c",
     "build:styles": "node node_modules/rollup/dist/bin/rollup -c rollup.styles.config.js",
     "serve": "http-server docs"
@@ -17,7 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "http-server": "^14.1.1",
-    "marked": "^4.1.0"
+    "marked": "^4.1.0",
+    "sass": "^1.58.3"
   },
   "devDependencies": {
     "jest": "^29.2.1",
