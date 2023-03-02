@@ -1,6 +1,14 @@
 (function () {
     'use strict';
 
+    const MODE_IDLE = 0;
+
+
+    /**
+     * clicked
+     * MODE_DOT --> MODE_DASH --> MODE_DELETE --> MODE_CHANGE_APLHABET --> MODE_IDLE
+     * PAUSE_LETTER --> PAUSE_SPACE
+     */
     class MorseKey {
 
         #debounceTimeout = 10;
@@ -23,6 +31,7 @@
 
         #releasedTime = -1;
 
+        #currentMode = MODE_IDLE;
 
         constructor(reader) {
             this.#reader = reader;
@@ -74,6 +83,7 @@
                 return;
             }
             const newTime = (new Date()).getTime();
+            
             if (newTime - this.#clickedTime < this.#pointLength) {
                 this.#reader.addDot();
             } else if (newTime - this.#clickedTime < this.#dashLength) {
@@ -83,14 +93,18 @@
             } else {
                 this.#reader.toggleAlphabet();
             }
+
             this.#releasedTime = newTime;
+            
             this.#clickedTime = -1;
         }
 
     }
 
     class MorseNode {
+
         dotNode = null;
+        
         dashNode = null;
 
         constructor(ch, dotNode, dashNode) {
@@ -450,9 +464,12 @@
     };
 
     class MorseReader {
+
         #buffer = [];
 
         #currentNode = null;
+
+        #previousNode = null;
 
         #tree = null;
 
@@ -495,6 +512,7 @@
         }
 
         addDash () {
+            this.#previousNode = this.#currentNode;
             if (this.#currentNode.hasDashNode()) {
                 this.#currentNode = this.#currentNode.getDashNode();
             } else {
@@ -504,12 +522,17 @@
         }
 
         addDot () {
+            this.#previousNode = this.#currentNode;
             if (this.#currentNode.hasDotNode()) {
                 this.#currentNode = this.#currentNode.getDotNode();
             } else {
                 this.#pushCharacter();
                 this.#currentNode = this.#tree;
             }
+        }
+
+        stepBackward() {
+            this.#currentNode = this.#previousNode;
         }
 
         addPause () {
@@ -524,11 +547,15 @@
         deleteLastCharacter () {
             if (this.#currentNode !== this.#tree) {
                 this.#currentNode = this.#tree;
-                return;
+                return '';
             }
             if (this.#buffer.length > 0) {
-                this.#buffer.pop();
+                return this.#buffer.pop();
             }
+        }
+
+        addCharacter (character) {
+            this.#buffer.push(character);
         }
 
         getBuffer () {
@@ -543,6 +570,7 @@
     }
 
     class TimingBar {
+
         #maxLength;
 
         #barElement;
@@ -554,8 +582,11 @@
         #timer = null;
 
         constructor(elementSelector, maxLength) {
+
             this.setMaxLength(maxLength);
+            
             this.#barElement = document.querySelector(elementSelector);
+            
             this.#barElement.style.width = '0%';
         }
 
@@ -583,8 +614,8 @@
             const newTime = (new Date()).getTime();
             const passedTime = newTime - this.#startedTime;
             if (passedTime > this.#maxLength) {
-            this.#barElement.style.width = '100%';
-            this.#timer = null;
+                this.#barElement.style.width = '100%';
+                this.#timer = null;
                 return;
             }
 
@@ -598,9 +629,8 @@
         
         #timingBar;
 
-
-
         constructor (elementSelector, dotLength, dashLength, deleteLength, maxLength) {
+
             this.#timingBar = new TimingBar(`${elementSelector} .timer-bar--time`, maxLength);
             const dotTimingElement = document.querySelector(`${elementSelector} .timer-bar--dot`);
             const dashTimingElement = document.querySelector(`${elementSelector} .timer-bar--dash`);
@@ -628,11 +658,13 @@
         #timingBar;
 
         constructor (elementSelector, charLength, maxLength) {
+
             this.#timingBar = new TimingBar(`${elementSelector} .timer-bar--time`, maxLength);
 
             const charTimingElement = document.querySelector(`${elementSelector} .timer-bar--char`);
             
             const charPercent = Math.round(100 * (charLength / maxLength));
+            
             charTimingElement.style.width = `${charPercent}%`;
         }
 
@@ -656,7 +688,7 @@
     const key = new MorseKey(reader);
     reader.setOnChangeModeCallback(changeMode);
 
-    function startBeep(e) {
+    function startClick(e) {
       e.preventDefault();
       if (pressed) {
           return;
@@ -668,7 +700,7 @@
       pausetimer.stopTimer();
     }
 
-    function stopBeep(e) {
+    function stopClick(e) {
       e.preventDefault();
       if (!pressed){
           return;
@@ -689,6 +721,7 @@
         button = document.getElementById("button");
         message = document.getElementById("message");
         typingAlphabetLabel = document.querySelector("#button .js-key-button--aplphabet");
+
         beeptimer = new BeepTiming(
           '#beeptimer',
           key.getDotLength(),
@@ -696,16 +729,18 @@
           key.getDeleteLength(),
           key.getSwitchAlphabetLength()
         );
+        
         pausetimer = new PauseTiming(
           '#pausetimer',
           key.getCharacterSpacingLength(),
           key.getPauseLength()
         );
-        button.addEventListener("mousedown", startBeep);
-        button.addEventListener("mouseup", stopBeep);
-        button.addEventListener("touchstart", startBeep);
-        button.addEventListener("touchend", stopBeep);
-        button.addEventListener("click", stopBeep);
+        
+        button.addEventListener("mousedown", startClick);
+        button.addEventListener("mouseup", stopClick);
+        button.addEventListener("touchstart", startClick);
+        button.addEventListener("touchend", stopClick);
+        button.addEventListener("click", stopClick);
     };
 
     onDocumentLoad();
