@@ -1,73 +1,190 @@
-.key-button {
-    background-color: green;
-    width: 500px;
-    height: 250px;
-    overflow:hidden;
-    position:relative;
-    touch-action: manipulation;
+.key-page {
+    min-height: calc(100vh - 68px);
+    padding: 64px 24px 88px;
+    background: #f4f6f7;
+}
 
-    &--alphabet {
-        color: white;
-        position:absolute;
-        top: 10px;
-        right: 10px;
-    }
+.key-page__intro,
+.key-tool {
+    max-width: 820px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.key-page__intro {
+    margin-bottom: 32px;
+}
+
+.key-page__intro h1 {
+    margin-bottom: 14px;
+}
+
+.key-page__intro p:last-child {
+    max-width: 680px;
+    font-size: 18px;
+}
+
+.key-tool {
+    display: grid;
+    gap: 24px;
+}
+
+.key-button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 8px;
+    color: #fff;
+    background: #14765a;
+    box-shadow: 0 16px 32px rgba(23, 32, 42, 0.16);
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+.key-button:hover {
+    background: #0f654c;
 }
 
 .key-button--clicked {
-    background-color: red;
+    background: #b83b35;
+}
+
+.key-button--clicked:hover {
+    background: #a9322d;
+}
+
+.key-button__label {
+    font-size: 24px;
+    font-weight: 760;
+    pointer-events: none;
+}
+
+.key-button--alphabet {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    color: #fff;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    font-weight: 800;
+    pointer-events: none;
+}
+
+.timing-group {
+    display: grid;
+    gap: 8px;
+}
+
+.timing-group__header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    color: #58636f;
+    font-size: 13px;
+}
+
+.timing-group__header span:first-child {
+    color: #17202a;
+    font-weight: 750;
 }
 
 .timer-bar {
-    width: 500px;
-    height: 50px;
-    position:relative;
-    background: gray;
+    position: relative;
+    width: 100%;
+    height: 48px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #dce2e7;
 }
 
 .timer-bar--time {
     position: absolute;
-    left: 0;
     bottom: 0;
+    left: 0;
+    z-index: 4;
     width: 50%;
-    height: 10px;
-    background: green;
+    height: 7px;
+    background: #f2c84b;
 }
 
 .timer-bar--delete,
 .timer-bar--dash,
 .timer-bar--dot,
-.timer-bar--char
-{
+.timer-bar--char {
     position: absolute;
-    left: 0;
     top: 0;
-    height: 40px;
-    opacity: 0.25;
-    background: blue;
-    color: white;
+    left: 0;
+    height: 41px;
+    padding: 12px 8px 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 750;
     text-align: right;
-    vertical-align: baseline;
 }
-
 
 .timer-bar--delete {
     width: 75%;
+    background: #8b4d76;
 }
+
 .timer-bar--dash {
     width: 50%;
+    background: #2457c5;
 }
+
 .timer-bar--dot {
     width: 25%;
+    background: #14765a;
 }
 
 .timer-bar--char {
     width: 33%;
+    background: #2457c5;
+}
+
+.result-panel {
+    min-height: 128px;
+    padding: 18px;
+    border: 1px solid #c9d0d6;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.result-panel__label {
+    display: block;
+    margin-bottom: 12px;
+    color: #58636f;
+    font-size: 13px;
+    font-weight: 750;
 }
 
 .result-text {
-    text-decoration: underline;
-    font-family: monospacei;
+    min-height: 46px;
+    overflow-wrap: anywhere;
+    color: #17202a;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 25px;
+    line-height: 1.5;
 }
 
+@media (max-width: 560px) {
+    .key-page {
+        padding: 44px 16px 64px;
+    }
+
+    .key-button {
+        height: 200px;
+    }
+
+    .timing-group__header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 2px;
+    }
+}
