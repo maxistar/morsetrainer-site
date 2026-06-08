@@ -605,6 +605,65 @@ p {
   line-height: 1.5;
 }
 
+.faq-page {
+  min-height: calc(100vh - 160px);
+  background: var(--surface-soft);
+}
+
+.faq-intro,
+.faq-list {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-right: 24px;
+  padding-left: 24px;
+}
+
+.faq-intro {
+  padding-top: 72px;
+  padding-bottom: 44px;
+}
+
+.faq-intro p:last-child {
+  max-width: 720px;
+  margin-bottom: 0;
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.faq-list {
+  display: grid;
+  gap: 0;
+  padding-bottom: 88px;
+}
+
+.faq-list article {
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+}
+
+.faq-list h2 {
+  margin-bottom: 12px;
+  font-size: 25px;
+}
+
+.faq-list article > p:last-child {
+  max-width: 760px;
+  margin-bottom: 0;
+  line-height: 1.7;
+}
+
+.faq-list__opensource {
+  margin-top: 24px;
+  padding: 32px !important;
+  border: 1px solid #b9c9df !important;
+  border-radius: 8px;
+  background: #eaf1fb;
+}
+
+.faq-list__opensource .product-actions {
+  margin-top: 24px;
+}
+
 .site-footer {
   display: flex;
   align-items: center;
@@ -674,6 +733,7 @@ p {
   }
   .site-header {
     align-items: flex-start;
+    flex-wrap: wrap;
     padding: 10px 16px;
   }
   .site-brand {
@@ -686,7 +746,9 @@ p {
     height: 34px;
   }
   .site-nav {
+    width: 100%;
     gap: 2px;
+    justify-content: space-between;
   }
   .site-nav a {
     padding: 8px;
@@ -711,6 +773,27 @@ p {
   }
   .section {
     padding: 64px 18px;
+  }
+  .faq-intro,
+  .faq-list {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+  .faq-intro {
+    padding-top: 48px;
+    padding-bottom: 32px;
+  }
+  .faq-intro p:last-child {
+    font-size: 18px;
+  }
+  .faq-list {
+    padding-bottom: 64px;
+  }
+  .faq-list h2 {
+    font-size: 23px;
+  }
+  .faq-list__opensource {
+    padding: 24px 18px !important;
   }
   .workflow,
   .feature-list,

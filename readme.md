@@ -11,6 +11,7 @@ The deployed static site lives in `docs/`:
 ```text
 docs/
 ├── index.html              Android app product page
+├── faq/index.html          Product FAQ and open-source links
 ├── morsekey/index.html     Interactive online Morse key
 └── assets/
     ├── bundle.js           Generated online-key JavaScript
@@ -18,7 +19,7 @@ docs/
     └── screenshots/        Website-owned Android screenshots
 ```
 
-The homepage HTML is maintained directly in `docs/index.html`. The online-key HTML is maintained in `docs/morsekey/index.html`.
+The homepage HTML is maintained directly in `docs/index.html`. The FAQ is maintained in `docs/faq/index.html`. The online-key HTML is maintained in `docs/morsekey/index.html`.
 
 JavaScript source is in `src/`. Styles are maintained in `styles/` and imported through `src/main.styles.js`.
 
@@ -71,6 +72,7 @@ The default address is usually <http://127.0.0.1:8080/>.
 Verify both routes:
 
 - `/`
+- `/faq/`
 - `/morsekey/`
 
 ## Android Screenshots
@@ -119,7 +121,7 @@ npm run build:styles
 Then serve `docs/` and verify:
 
 - Homepage content and screenshots load.
-- Google Play, online key, privacy, and GitHub links are correct.
+- Google Play, FAQ, online key, privacy, GitHub source, and GitHub Issues links are correct.
 - No horizontal scrolling or overlapping content appears on mobile.
 - Keyboard focus is visible.
 - The online key remains functional.
